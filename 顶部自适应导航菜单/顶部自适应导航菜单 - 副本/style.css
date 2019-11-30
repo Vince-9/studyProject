@@ -1,0 +1,113 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+/* body {
+    margin: 0;
+    padding: 0;
+    max-width: 100vw;
+    min-height: 100vh;
+} */
+
+.header {
+    margin: 0px;
+    height: 60px;
+    background: rgb(40, 9, 53);
+    color: white;
+    padding: 0 20px;
+    /* width: 100%; */
+}
+
+.header .logo {
+    text-decoration: none;
+    font-size: 30px;
+    line-height: 60px;
+    float: left;
+}
+
+.menu {
+    float: right;
+    margin: 0;
+    padding: 0;
+    transition: 0.5s;
+}
+
+.header .menu ul {
+    display: block;
+    line-height: 60px;
+}
+
+.header .menu a {
+    color: white;
+    text-decoration: none;
+    padding: 0 10px;
+    margin: 0;
+}
+
+.show-menu-btn, .hide-menu-btn {
+    position: absolute;
+    visibility: hidden;
+    width: 40px;
+    height: 40px;
+    font-size: 40px;
+    font-weight: 600;
+}
+
+.header .menu a:hover {
+    color: dodgerblue;
+    transition: 0.4s;
+}
+
+#chk {
+    visibility: hidden;
+}
+
+.content {
+    /* width: 100%; */
+    margin: 0;
+    padding: 0 10px;
+    text-align: justify;
+}
+
+.content img {
+    width: 1080px;
+    max-width: 90vw;
+}
+
+.content center {
+    width: 100%;
+}
+
+@media screen and (max-width:800px) {
+    .header>.menu {
+        background: #333;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0px;
+        right: -100vw;
+        text-align: center;
+    }
+    .header>.menu>a {
+        display: block;
+        padding: 10px 0;
+    }
+    .header>.menu>a:nth-child(1) {
+        margin-top: 100px;
+    }
+
+    .show-menu-btn,
+    .hide-menu-btn {
+        margin: 0;
+        padding: 0;
+        display: block;
+        visibility: visible;
+        position: absolute !important;
+        top: 20px;
+        right: 40px;
+    }
+
+    #chk:checked ~ .menu {
+        right: 0;
+    }
+}
