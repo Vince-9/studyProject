@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>计算器</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            /* position: relative; */
+            /* display: flex;
+            justify-content: center; */
+            /* width: 100%;
+            height: 100%; */
+            /* position:absolute; */
+            /* top: 50%;
+            left: 50%; */
+            /* margin: 50vh auto 0; */
+            /* transform: translate(-50%,-50%);
+             */
+            display: flex;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        #calculatorBody {
+            width: 350px;
+            height: 650px;
+            /* background: chocolate; */
+            background-image: -webkit-linear-gradient(45deg, #9000ff, #Ec008c);
+            box-shadow: 5px 5px 12px rgb(175, 47, 45);
+            border-radius: 4px;
+            margin: auto;
+            /* transform: translate(-50%,-50%); */
+        }
+
+        #screen {
+            width: 98%;
+            height: 45%;
+            border-bottom: 1px solid gray;
+            /* border-radius: 4px; */
+            background: white;
+            margin: 0 auto;
+            margin-top: 5px;
+        }
+
+        .btn {
+            margin: 0;
+            width: 87px;
+            height: 69.7px;
+            float: left;
+            text-align: center;
+            line-height: 70.5px;
+            color: white;
+            cursor: pointer;
+            border-bottom: white 0.5px solid;
+            border-right: white 0.5px solid;
+        }
+
+        .btn:nth-child(4n) {
+            border-right: none;
+        }
+
+        .btn:nth-child(n+17) {
+            border-bottom: none;
+        }
+
+        .btn:hover {
+            background: rgba(100, 148, 237, 0.384);
+        }
+
+        #resultScreen {
+            font-size: 40px;
+            width: 90%;
+            text-align: right;
+            position: relative;
+            top: 60%;
+        }
+
+        #inputScreen {
+            font-size: 30px;
+            width: 90%;
+            text-align: right;
+            position: relative;
+            top: 60%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="calculatorBody">
+            <div id="screen">
+                <div id="inputScreen"></div>
+                <div id="resultScreen">0</div>
+            </div>
+            <div id="btns">
+                <div class="btn">AC</div>
+                <div class="btn">DEL</div>
+                <div class="btn">%</div>
+                <div class="btn">÷</div>
+                <div class="btn">7</div>
+                <div class="btn">8</div>
+                <div class="btn">9</div>
+                <div class="btn">×</div>
+                <div class="btn">4</div>
+                <div class="btn">5</div>
+                <div class="btn">6</div>
+                <div class="btn">-</div>
+                <div class="btn">1</div>
+                <div class="btn">2</div>
+                <div class="btn">3</div>
+                <div class="btn">+</div>
+                <div class="btn">ANS</div>
+                <div class="btn">0</div>
+                <div class="btn">.</div>
+                <div class="btn">=</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        var calString = "";//初始待计算的字符串
+        var result = 0;//计算结果
+        var ANS;
+        var allBtn = document.getElementsByClassName("btn");
+        console.log("TCL: allBtn.length", allBtn.length);
+        allBtn[0].addEventListener("click", function () {
+            calString = "";
+            document.getElementById("resultScreen").innerHTML="0";
+        });
+        allBtn[1].addEventListener("click", function () {
+            if (calString.length > 0) {
+                calString = calString.slice(0, -1);//删除最后一个字符
+            }
+        });
+        allBtn[2].addEventListener("click", function () { calString += '%'; });
+        allBtn[3].addEventListener("click", function () { calString += '÷'; });
+        allBtn[4].addEventListener("click", function () { calString += '7'; });
+        allBtn[5].addEventListener("click", function () { calString += '8'; });
+        allBtn[6].addEventListener("click", function () { calString += '9'; });
+        allBtn[7].addEventListener("click", function () { calString += '×'; });
+        allBtn[8].addEventListener("click", function () { calString += '4'; });
+        allBtn[9].addEventListener("click", function () { calString += '5'; });
+        allBtn[10].addEventListener("click", function () { calString += '6'; });
+        allBtn[11].addEventListener("click", function () { calString += '-'; });
+        allBtn[12].addEventListener("click", function () { calString += '1'; });
+        allBtn[13].addEventListener("click", function () { calString += '2'; });
+        allBtn[14].addEventListener("click", function () { calString += '3'; });
+        allBtn[15].addEventListener("click", function () { calString += '+'; });
+        allBtn[16].addEventListener("click", function () { calString += 'ANS'; });
+        allBtn[17].addEventListener("click", function () { calString += '0'; });
+        allBtn[18].addEventListener("click", function () { calString += '.'; });
+        allBtn[19].addEventListener("click", function () {
+            //计算结果
+            //var computeSign = [];
+            //var computeNumber = [];
+            var backupCalString = calString;
+            for (var i = 0; i < calString.length; i++) {//先处理乘除
+                if (calString[i] == '×' || calString[i] == '÷') {
+                    var a = getFirstNum(i);
+                    var b = getSecondNum(i);
+                    var tempRes;
+                    if (calString[i] == '×')
+                        tempRes = Number(a[0]) * Number(b[0]);
+                    else
+                        tempRes = Number(a[0]) / Number(b[0]);
+
+                    //将计算结果替换calString中的对应部分
+                    var tempStr1 = "", tempStr2 = "";
+                    if (a[1] > 0)
+                        tempStr1 = calString.slice(0, a[1])
+                    if (b[1] < calString.length - 1)
+                        tempStr2 = calString.slice(b[1] + 1, calString.length);
+                    calString = tempStr1 + tempRes + tempStr2;
+                    console.log("TCL: tempStr2", tempStr2)
+                    console.log("TCL: tempRes", tempRes)
+                    console.log("TCL: tempStr1", tempStr1)
+                    i = 0;
+                }
+            }
+
+            for (var i = 0; i < calString.length; i++) {//再处理加减
+                if (calString[i] == '+' || calString[i] == '-') {
+                    var a = getFirstNum(i);
+                    var b = getSecondNum(i);
+                    var tempRes = 0;
+                    if (calString[i] == '+')
+                        tempRes = Number(a[0]) + Number(b[0]);
+                    else
+                        tempRes = Number(a[0]) - Number(b[0]);
+
+                    //将计算结果替换calString中的对应部分
+                    var tempStr1 = "", tempStr2 = "";
+                    if (a[1] > 0)
+                        tempStr1 = calString.slice(0, a[1])
+                    if (b[1] < calString.length - 1)
+                        tempStr2 = calString.slice(b[1] + 1, calString.length);
+                    calString = tempStr1 + tempRes + tempStr2;
+                    console.log("TCL: tempStr2", tempStr2)
+                    console.log("TCL: +tempRes", tempRes)
+                    console.log("TCL: tempStr1", tempStr1)
+                    i = 0;
+                }
+            }
+
+            document.getElementById("resultScreen").innerHTML = calString;//刷新显示
+            
+            calString = backupCalString;
+            document.getElementById("inputScreen").innerHTML = backupCalString;//刷新显示
+        });
+
+        //获取算式a+b中的a
+        function getFirstNum(i) {
+            i--;
+            var result = Number(calString[i]);
+            var k = 10;
+            while (i > 0) {
+                var preNumber = calString[i - 1];
+                if (Number(preNumber) >= 0 && Number(preNumber) <= 9) {//若i的前一个字符是数字,则
+                    result += Number(preNumber) * k;
+                    k *= 10;
+                    i--;
+                } else {
+                    break;//不是数字则break
+                }
+            }
+            console.log("TCL: getFirstNum -> result", result)
+            return [result, i];
+
+        }
+
+        //获取算式a+b中的b
+        function getSecondNum(i) {
+            i++;
+            var result = calString[i];
+            var k = 10;
+            while (i < calString.length - 1) {
+                var nexNumber = calString[i + 1];
+                if (Number(nexNumber) >= 0 && Number(nexNumber) <= 9) {//若i的前一个字符是数字,则
+                    result = Number(result * k) + Number(nexNumber);
+                    //k *= 10;
+                    i++;
+                } else {
+                    break;//不是数字则break
+                }
+            }
+            console.log("TCL: getSecondNum -> result", result)
+            return [result, i];
+        }
+
+
+
+
+        for (var i = 0; i < allBtn.length; i++) {
+            allBtn[i].addEventListener("click", function () {
+                document.getElementById("inputScreen").innerHTML = calString;
+            })
+        }
+
+
+    </script>
+</body>
+
+</html>
