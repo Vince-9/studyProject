@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="panel">
+            <div class="content">
+                <div class="switch">
+                    <span class="login active">Login</span>
+                    <span>/</span>
+                    <span class="signup">Sign Up</span>
+                </div>
+                <form action="">
+                    <div class="input" placeholder='用户名'><input type="text"></div>
+                    <div class="input hide" id="email" placeholder='邮箱'><input type="text"></div>
+                    <div class="input" placeholder='密码'><input type="text"></div>
+                    <div class="input hide" id="repeat" placeholder='重复'><input type="text"></div>
+                </form>
+
+                <button>登录</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="jquery.js"></script>
+<script>
+    $('.login').on('click',function(){
+        $('.switch span').removeClass('active');
+        $(this).addClass('active');
+        $('#email,#repeat').addClass('hide');
+    })
+    $('.signup').on('click',function(){
+        $('.switch span').removeClass('active');
+        $(this).addClass('active');
+        $('#email,#repeat').removeClass('hide');
+    })
+</script>
+</html>
